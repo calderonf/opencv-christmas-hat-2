@@ -10,7 +10,7 @@ import platform
 import math
 from datetime import datetime
 show_params = False
-CAMERANUM = 2#2
+CAMERANUM = 1#2
 FullScreen = True  
 font = cv2.FONT_HERSHEY_SIMPLEX
 color = (90, 90, 255)
@@ -30,13 +30,13 @@ def face_detect(img, cname):
 
 def christmas_hat(img, cname='data/haarcascade_frontalface_alt.xml'):
     faces = face_detect(img, cname)
-    hats = [cv2.imread(f'img/hats/hat_{i + 1}.png', -1) for i in [1]]
+    hats = [cv2.imread(f'img/hats/Hat_puj_{i + 1}.png', -1) for i in [0]]
     for face in faces:
         hat = random.choice(hats)
-        scale = face[3] / hat.shape[0] * 2
+        scale = face[3] / hat.shape[0]
         hat = cv2.resize(hat, (0, 0), fx=scale, fy=scale)
-        x_offset = int(face[0] + (face[2] / 2) - (hat.shape[1] / 2) + (face[2] * 0.1))
-        y_offset = int(face[1] - hat.shape[0] / 2)
+        x_offset = int(face[0] + (face[2] / 2) - (hat.shape[1] / 2))#+ (face[2] * 0.1)
+        y_offset = int(face[1] - hat.shape[0]/1.5)
 
         x1 = max(x_offset, 0)
         x2 = min(x_offset + hat.shape[1], img.shape[1])
