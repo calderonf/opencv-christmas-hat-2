@@ -43,7 +43,7 @@ def christmas_hat(img, cname='data/haarcascade_frontalface_alt.xml'):
 def main(fname):
     img = cv2.imread(fname)
     christmas_hat(img)
-	cv2.imwrite(f'img/result/{fname.split("/")[-1]}', img) 
+    cv2.imwrite(f'img/result/{fname.split("/")[-1]}', img) 
 
 if __name__ == "__main__":
     main('img/test/test_1.jpg')

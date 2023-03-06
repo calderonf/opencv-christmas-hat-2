@@ -10,7 +10,7 @@ import platform
 import math
 from datetime import datetime
 show_params = False
-CAMERANUM = 2#2
+CAMERANUM = 1#2 para portatil en la U # 1 para PC casa
 FullScreen = True  
 font = cv2.FONT_HERSHEY_SIMPLEX
 color = (90, 90, 255)
@@ -30,13 +30,13 @@ def face_detect(img, cname):
 
 def christmas_hat(img, cname='data/haarcascade_frontalface_alt.xml'):
     faces = face_detect(img, cname)
-    hats = [cv2.imread(f'img/hats/hat_{i + 1}.png', -1) for i in [1]]
+    hats = [cv2.imread(f'img/clouds/cloud_{i + 1}.png', -1) for i in [0]]
     for face in faces:
         hat = random.choice(hats)
-        scale = face[3] / hat.shape[0] * 2
+        scale = face[3] / hat.shape[0] 
         hat = cv2.resize(hat, (0, 0), fx=scale, fy=scale)
-        x_offset = int(face[0] + (face[2] / 2) - (hat.shape[1] / 2) + (face[2] * 0.1))
-        y_offset = int(face[1] - hat.shape[0] / 2)
+        x_offset = int(face[0] + (face[2] / 2) - (hat.shape[1] / 2) + (face[2] * 1))
+        y_offset = int(face[1] - hat.shape[0] )
 
         x1 = max(x_offset, 0)
         x2 = min(x_offset + hat.shape[1], img.shape[1])
@@ -118,7 +118,7 @@ def main():
             if temporizador and contarcuadros>1:
                 height, width, _ = framed.shape
                 if int(contarcuadros/10)==0:
-                    cv2.putText(framed, "Di TranSIStor", (int(framed.shape[1]/2)-170, int(framed.shape[0]/2)),
+                    cv2.putText(framed, "Di Ponti", (int(framed.shape[1]/2)-170, int(framed.shape[0]/2)),
                     fontFace=cv2.FONT_HERSHEY_TRIPLEX,
                     fontScale=min(width, height) * FONT_SCALE,
                     thickness=math.ceil(min(width, height) * THICKNESS_SCALE),
@@ -145,7 +145,7 @@ def main():
                 temporizador=False
                 today = datetime.now()
                 iso_date = str(today.isoformat()).replace("-","").replace(".","").replace(":","")
-                filename='C:/Users/calderonf/Dropbox/navidad_2022_electronica/'+str(iso_date)+'.jpg'
+                filename="C:/Users/Francisco/Dropbox/Public/expoJaveriana2023/" + str(iso_date) + ".jpg"
                 #print("Guardando en ",filename)
                 cv2.imwrite(filename,framed)
                 cv2.imshow("Video", cv2.bitwise_not(framed))
