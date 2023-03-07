@@ -108,7 +108,6 @@ def main():
                 print("hardware error")
                 break
             img = cv2.flip(im, +1)
-            print(img.shape)
             if show_params:
                 new_frame_time = time.time()
                 fps = 1 / (new_frame_time - prev_frame_time)
