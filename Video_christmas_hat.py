@@ -28,13 +28,12 @@ def face_detect(img, cname):
     return faces
 
 
-def christmas_hat(img, cname='data/haarcascade_frontalface_alt.xml'):
+def christmas_hat(img, hats, cname='data/haarcascade_frontalface_alt.xml'):
     faces = face_detect(img, cname)
-    hats = [cv2.imread(f'img/hats/Hat_puj_{i + 1}.png', -1) for i in [0]]
     for face in faces:
         hat = random.choice(hats)
         scale = face[3] / hat.shape[0]
-        hat = cv2.resize(hat, (0, 0), fx=scale, fy=scale)
+        hat = cv2.resize(hat, (0, 0), fx=scale, fy=scale,interpolation=cv2.INTER_LANCZOS4)
         x_offset = int(face[0] + (face[2] / 2) - (hat.shape[1] / 2))#+ (face[2] * 0.1)
         y_offset = int(face[1] - hat.shape[0]/1.5)
 
@@ -55,9 +54,9 @@ def christmas_hat(img, cname='data/haarcascade_frontalface_alt.xml'):
 
 
 def put_frame(img):
-    frame = cv2.imread('img/frames/frame_2.png', -1)
-    x_offset = 160
-    y_offset = 70
+    frame = cv2.imread('img/frames/marco_EJ_04.png', -1)
+    x_offset = 0
+    y_offset = 0
     tam = (frame.shape[1] - x_offset * 2, frame.shape[0] - y_offset * 2)
 
     img2 = cv2.resize(img, tam)
@@ -80,6 +79,7 @@ def put_frame(img):
 
 def main():
     cap = cv2.VideoCapture(CAMERANUM)
+    hats = [cv2.imread(f'img/hats/Hat_puj_{i + 1}.png', -1) for i in [0]]
     if platform.system() == "Linux":
         cap = cv2.VideoCapture(CAMERANUM)
     elif platform.system() == 'Windows':
@@ -90,13 +90,15 @@ def main():
     if not cap.isOpened():
         print("ERROR! Unable to open camera")
     else:
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
         if FullScreen:
             cv2.namedWindow('Video', cv2.WINDOW_FREERATIO)
             cv2.setWindowProperty('Video', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
         else:
             cv2.namedWindow("Video")
         prev_frame_time = time.time()
-        time.sleep(0.03)
+        #time.sleep(0.03)
         new_frame_time = time.time()
         contarcuadros=0
         temporizador=False
@@ -106,13 +108,14 @@ def main():
                 print("hardware error")
                 break
             img = cv2.flip(im, +1)
+            print(img.shape)
             if show_params:
                 new_frame_time = time.time()
                 fps = 1 / (new_frame_time - prev_frame_time)
                 prev_frame_time = new_frame_time
                 fps = str(int(fps))
                 cv2.putText(img, "FPS: {}".format(fps), (15, 80), font, 1.0, color)
-            vis = christmas_hat(img)
+            vis = christmas_hat(img,hats)
             framed = put_frame(vis)
             
             if temporizador and contarcuadros>1:
