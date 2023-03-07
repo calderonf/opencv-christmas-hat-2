@@ -147,7 +147,7 @@ def main():
                 temporizador=False
                 today = datetime.now()
                 iso_date = str(today.isoformat()).replace("-","").replace(".","").replace(":","")
-                filename='C:/Users/calderonf/Dropbox/navidad_2022_electronica/'+str(iso_date)+'.jpg'
+                filename='C:/Users/calderonf/Dropbox/Public/expoJaveriana2023/'+str(iso_date)+'.jpg'
                 #print("Guardando en ",filename)
                 cv2.imwrite(filename,framed)
                 cv2.imshow("Video", cv2.bitwise_not(framed))
